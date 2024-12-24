@@ -1061,11 +1061,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0c18dae5522596458353605e461c1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fruitPrefabs:
-  - {fileID: 6057485436138397656, guid: 34e748009b71d604d9c802890a53069a, type: 3}
-  - {fileID: 3275230435302610721, guid: 65a4e3e9103ac5f4ab79fbc93faefad2, type: 3}
-  - {fileID: 8086906954321846606, guid: c5c1e6b8ed6fb8645905a73f8f8ee705, type: 3}
-  - {fileID: 8086906954321846606, guid: 9593ca1ed29bbbb4d86e5e96af957e8a, type: 3}
+  _spawnableFruits:
+  - {fileID: 11400000, guid: 3edf23a2ee2de684e94c7fce50e1a0d1, type: 2}
+  - {fileID: 11400000, guid: 9ec115a22f840b94c8192037addbcb83, type: 2}
+  - {fileID: 11400000, guid: 4c765239f49b7654dbf4bf3cac5a1da7, type: 2}
+  - {fileID: 11400000, guid: bce2b1ef5f6a5da4b808be085bbd1523, type: 2}
+  - {fileID: 11400000, guid: 7ac693a819e189e46b5fc9e274d82a4f, type: 2}
+  _fruitPrefab: {fileID: 6057485436138397656, guid: 34e748009b71d604d9c802890a53069a, type: 3}
   _spawner: {fileID: 1903677071}
   _upcomingFruitVisual: {fileID: 1351648991}
 --- !u!1 &1903677068

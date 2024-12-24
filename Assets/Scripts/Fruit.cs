@@ -1,25 +1,25 @@
 ﻿using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Fruit : MonoBehaviour
 {
-    [SerializeField] private FruitDefinition _definition;
-    [SerializeField] private float _explosionRadius = 1f;
-    [SerializeField] private float _explosionStrength = 1f;
-
+    private FruitDefinition _definition;
+    private Transform _transform;
+    private Rigidbody2D _rb;
+    private SpriteRenderer _renderer;
+    
     public FruitDefinition Definition => _definition;
-    public Rigidbody2D Rigidbody => _rb;
     public Vector3 Velocity => _rb.velocity;
     
     public UnityAction<Fruit, Fruit> OnContact;
     
-    private Rigidbody2D _rb;
-    private Transform _transform;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _renderer = GetComponent<SpriteRenderer>();
         _transform = transform;
     }
 
@@ -37,21 +37,30 @@ public class Fruit : MonoBehaviour
         }
     }
 
-    public void Initialize(Vector3 oldVelocity)
+    public void Initialize(FruitDefinition def, bool extraMovement = false)
     {
-        _rb.velocity = Vector3.right * 0.5f;
+        _definition = def;
+        _transform.localScale = _definition.Scale;
+        _renderer.sprite = _definition.Sprite;
+        _rb.mass = _definition.Mass;
+        if (extraMovement)
+        {
+            _rb.velocity = Vector3.one * 0.5f;
+            _transform.localScale = Vector3.zero;
+            _transform.DOScale(_definition.Scale, 0.1f);
+        }
     }
 
     private void Explode(Vector3 centerPoint)
     {
-        var results = Physics2D.CircleCastAll(_transform.position, _explosionRadius, Vector2.one);
+        var results = Physics2D.CircleCastAll(centerPoint, _definition.ExplosionRadius, Vector2.one);
         Debug.Log(results.Length);
         foreach (var hit in results)
         {
             if (hit.rigidbody == null) continue;
-            var direction = hit.transform.position - _transform.position;
+            var direction = hit.transform.position - centerPoint;
             if(direction.magnitude <= 0) continue;
-            var exploisonForceByDistance = _explosionStrength * direction.magnitude;
+            var exploisonForceByDistance = _definition.ExplosionStrength * direction.magnitude;
             
             Debug.Log($"Explosion on {hit.transform.name} with force {exploisonForceByDistance:F2}");
             hit.rigidbody.AddForce(direction.normalized * exploisonForceByDistance, ForceMode2D.Impulse);
@@ -60,6 +69,6 @@ public class Fruit : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, _explosionRadius);
+        Gizmos.DrawWireSphere(transform.position, _definition.ExplosionRadius);
     }
 }

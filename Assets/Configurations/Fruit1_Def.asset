@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FruitName: Brown
   Sprite: {fileID: 21300000, guid: 89da260ae567aa144b26354c18224d64, type: 3}
-  Prefab: {fileID: 6057485436138397656, guid: 34e748009b71d604d9c802890a53069a, type: 3}
+  Scale: {x: 0.75, y: 0.75}
+  Mass: 1
+  ExplosionRadius: 0.5
+  ExplosionStrength: 1
   FruitEvolution: {fileID: 11400000, guid: 9ec115a22f840b94c8192037addbcb83, type: 2}

@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FruitName: Yellow
   Sprite: {fileID: 21300000, guid: 3861e3f58632cc74e805889a4d6f9c89, type: 3}
-  Prefab: {fileID: 8086906954321846606, guid: 9d2ffd92d1827e649a5b994c9b6d199d, type: 3}
+  Scale: {x: 1.75, y: 1.75}
+  Mass: 1.6
+  ExplosionRadius: 1
+  ExplosionStrength: 1
   FruitEvolution: {fileID: 11400000, guid: 894de3a6694c17b41b0622c59010f816, type: 2}

@@ -26,9 +26,9 @@ public class Spawner : MonoBehaviour
         _transform.position = spawnerPos;
     }
 
-    public void SetVisual(Fruit fruit)
+    public void SetVisual(FruitDefinition fruit)
     {
-        _spawnRenderer.sprite = fruit.Definition.Sprite;
-        _spawnTransform.localScale = fruit.transform.localScale;
+        _spawnRenderer.sprite = fruit.Sprite;
+        _spawnTransform.localScale = fruit.Scale;
     }
 }

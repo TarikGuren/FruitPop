@@ -8,16 +8,17 @@ using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private List<Fruit> _fruitPrefabs;
+    [SerializeField] private List<FruitDefinition> _spawnableFruits;
+    [SerializeField] private  Fruit _fruitPrefab;
     [SerializeField] private Spawner _spawner;
     [SerializeField] private SpriteRenderer _upcomingFruitVisual;
     
-    private Fruit _nextFruit;
-    private Fruit _upcomingFruit;
+    private FruitDefinition _nextFruit;
+    private FruitDefinition _upcomingFruit;
     
     private void Start()
     {
-        _upcomingFruit = _fruitPrefabs[Random.Range(0, _fruitPrefabs.Count)];
+        _upcomingFruit = _spawnableFruits[Random.Range(0, _spawnableFruits.Count)];
         SetNextFruit();
     }
 
@@ -26,44 +27,48 @@ public class GameController : MonoBehaviour
         _nextFruit = _upcomingFruit;
         _spawner.SetVisual(_nextFruit);
         
-        _upcomingFruit = _fruitPrefabs[Random.Range(0, _fruitPrefabs.Count)];
+        _upcomingFruit = _spawnableFruits[Random.Range(0, _spawnableFruits.Count)];
         
-        _upcomingFruitVisual.sprite = _upcomingFruit.Definition.Sprite;
-        _upcomingFruitVisual.transform.localScale = _upcomingFruit.transform.localScale;
+        _upcomingFruitVisual.sprite = _upcomingFruit.Sprite;
+        _upcomingFruitVisual.transform.localScale = _upcomingFruit.Scale;
     }
 
     private void OnContact(Fruit first, Fruit second)
     {
         if (first.Definition.FruitEvolution == null) return;
-        StartCoroutine(DelayedSpawn(first.Definition.FruitEvolution.Prefab, first.Velocity, first.transform.position, second.transform.position));
+        StartCoroutine(DelayedSpawn(first.Definition.FruitEvolution, first.transform.position, second.transform.position));
         first.OnContact -= OnContact;
     }
 
-    private IEnumerator DelayedSpawn(Fruit prefab, Vector3 velocity, Vector3 first, Vector3 second)
+    private IEnumerator DelayedSpawn(FruitDefinition def, Vector3 first, Vector3 second)
     {
         yield return new WaitForSeconds(0.1f);
         var center = second + (first - second) * 0.5f;
-        SpawnFruit(prefab, center, first);
+        SpawnFruit(def, center, true);
     }
 
-    private void SpawnFruit(Fruit fruit, Vector3 position, Vector3? old = null)
+    private void SpawnFruit(FruitDefinition fruit, Vector3 position, bool extraMovement = false)
     {
-        var newFruit = Instantiate(fruit, position, Quaternion.identity);
+        var newFruit = Instantiate(_fruitPrefab, position, Quaternion.identity);
+        newFruit.Initialize(fruit, extraMovement);
         newFruit.OnContact += OnContact;
+    }
 
-        if (old.HasValue)
+    private bool _canSpawn = true;
+    private void Update()
+    {
+        if (Input.GetMouseButtonUp(0) && _canSpawn)
         {
-            newFruit.Initialize(old.Value);
+            _canSpawn = false;
+            StartCoroutine(ReleaseFruit());
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator ReleaseFruit()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            SpawnFruit(_nextFruit, _spawner.Position);
-            SetNextFruit();
-        }
+        SpawnFruit(_nextFruit, _spawner.Position);
+        SetNextFruit();
+        yield return new WaitForSeconds(0.5f);
+        _canSpawn = true;
     }
 }

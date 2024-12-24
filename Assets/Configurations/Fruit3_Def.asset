@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FruitName: Blue
   Sprite: {fileID: 21300000, guid: 920195e2ec7f16d4b995af6edc6ca078, type: 3}
-  Prefab: {fileID: 8086906954321846606, guid: c5c1e6b8ed6fb8645905a73f8f8ee705, type: 3}
+  Scale: {x: 1.25, y: 1.25}
+  Mass: 1.4
+  ExplosionRadius: 0.8
+  ExplosionStrength: 1
   FruitEvolution: {fileID: 11400000, guid: bce2b1ef5f6a5da4b808be085bbd1523, type: 2}
