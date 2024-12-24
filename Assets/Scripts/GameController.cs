@@ -3,26 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
     [SerializeField] private List<Fruit> _fruitPrefabs;
     [SerializeField] private Spawner _spawner;
-    [SerializeField] private SpriteRenderer _nextFruitVisual;
+    [SerializeField] private SpriteRenderer _upcomingFruitVisual;
     
     private Fruit _nextFruit;
+    private Fruit _upcomingFruit;
     
     private void Start()
     {
+        _upcomingFruit = _fruitPrefabs[Random.Range(0, _fruitPrefabs.Count)];
         SetNextFruit();
     }
 
     private void SetNextFruit()
     {
-        _nextFruit = _fruitPrefabs[Random.Range(0, _fruitPrefabs.Count)];
-        _nextFruitVisual.sprite = _nextFruit.Definition.Sprite;
-        _nextFruitVisual.transform.localScale = _nextFruit.transform.localScale;
+        _nextFruit = _upcomingFruit;
+        _spawner.SetVisual(_nextFruit);
+        
+        _upcomingFruit = _fruitPrefabs[Random.Range(0, _fruitPrefabs.Count)];
+        
+        _upcomingFruitVisual.sprite = _upcomingFruit.Definition.Sprite;
+        _upcomingFruitVisual.transform.localScale = _upcomingFruit.transform.localScale;
     }
 
     private void OnContact(Fruit first, Fruit second)
@@ -46,7 +53,7 @@ public class GameController : MonoBehaviour
 
         if (old.HasValue)
         {
-            newFruit.CopyPhysics(old.Value);
+            newFruit.Initialize(old.Value);
         }
     }
 

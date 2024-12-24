@@ -162,3 +162,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _definition: {fileID: 11400000, guid: 3edf23a2ee2de684e94c7fce50e1a0d1, type: 2}
+  _explosionRadius: 0.5
+  _explosionStrength: 1
